@@ -10,8 +10,7 @@ import mlflow.lightgbm
 from utils.metrics import PowerRatio
 
 ## 1. lightgbm
-
-class lightgbm_dev_v1:
+class lightgbm_dev:
     def __init__(self, X_train, y_train, X_test, y_test,
                  baseline_params=None, baseline_ind=1,
                  search_space=None, max_evals=20):
