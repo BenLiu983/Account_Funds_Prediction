@@ -11,7 +11,7 @@ from utils.metrics import PowerRatio
 
 ## 1. lightgbm
 
-class lightgbm_dev:
+class lightgbm_dev_v1:
     def __init__(self, X_train, y_train, X_test, y_test,
                  baseline_params=None, baseline_ind=1,
                  search_space=None, max_evals=20):
@@ -162,3 +162,4 @@ class lightgbm_dev:
             return self.baseline_model()
         else:
             return self.hyperopt_model(max_evals=self.max_evals)
+
