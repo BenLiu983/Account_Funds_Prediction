@@ -12,9 +12,6 @@ from hyperopt.pyll.base import scope
 
 from utils.metrics import PowerRatio
 
-#import lightgbm as lgb
-#import mlflow.lightgbm
-
 class xgboost_dev_v1:
     def __init__(self, X_train, y_train, X_test, y_test,
                  baseline_params=None, baseline_ind=1,
@@ -72,8 +69,9 @@ class xgboost_dev_v1:
             
             params['max_depth'] = int(params['max_depth'])
             params['n_estimators'] = int(params['n_estimators'])
+            params['min_child_weight'] = int(params['min_child_weight'])  
 
-            model = lgb.LGBMRegressor(**params)
+            model = xgb.XGBRegressor(**params)
             model.fit(self.X_train, self.y_train)
             
             # predictions and metrics
@@ -108,12 +106,15 @@ class xgboost_dev_v1:
                 # int
                 'max_depth': int(best_params['max_depth']),
                 'n_estimators': int(best_params['n_estimators']),
+                'min_child_weight': int(best_params['min_child_weight']),
 
-                # decimal
-                'learning_rate': best_params['learning_rate'],
+                # float
+                'eta': best_params['eta'],
                 'subsample': best_params['subsample'],
                 'colsample_bytree': best_params['colsample_bytree'],
-
+                'lambda':  best_params['lambda']  ,
+                'alpha': best_params['alpha'] 
+                
             }
 
             model = xgb.XGBRegressor(**best_params_int)
