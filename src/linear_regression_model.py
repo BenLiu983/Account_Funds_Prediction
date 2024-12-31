@@ -12,7 +12,7 @@ import mlflow
 from utils.metrics import PowerRatio
 
 
-
+# v1
 class linear_regression_v1:
     def __init__(self, X_train, y_train, X_test, y_test, model_type = 'baseline', significance_level=0.05):
         self.X_train = X_train
@@ -39,7 +39,7 @@ class linear_regression_v1:
                 model = sm.OLS(y, X).fit()
                 
                 # p-values of the features
-                p_values = model.pvalues[1:]  # Exclude the intercept
+                p_values = model.pvalues[1:]  # exclude the intercept
                 max_p_value = p_values.max()
                 
                 # if the highest p-value > significance_level, remove the feature
@@ -55,7 +55,7 @@ class linear_regression_v1:
             return X, model
 
 
-        # adding a constant to the model (intercept)
+        # add a constant to the model (intercept)
         X_train_with_intercept = sm.add_constant(self.X_train)
 
         # apply backward selection
@@ -70,8 +70,8 @@ class linear_regression_v1:
     def forward_model(self):
         
         def forward_selection(X, y, significance_level=0.05):
-            selected_features = []  # list to store selected features
-            remaining_features = list(X.columns)  # list of all feature names
+            selected_features = []  
+            remaining_features = list(X.columns)  
             while remaining_features:
                 
                 p_values = []
@@ -101,7 +101,7 @@ class linear_regression_v1:
             return X_selected, model
 
         
-        # adding a constant to the model (intercept)
+        # add a constant to the model (intercept)
         X_train_with_intercept = sm.add_constant(self.X_train)
 
         # apply forward selection
@@ -111,6 +111,102 @@ class linear_regression_v1:
 
         return model, X_selected_forward
         
+        
+    def run_model(self):
+        if self.model_type == 'baseline':
+            return self.baseline_model()
+        elif self.model_type == 'backward':
+            return self.backward_model()
+        elif self.model_type == 'forward':
+            return self.forward_model()
+
+       
+# v2
+class linear_regression_v2:
+    def __init__(self, X_train, y_train, X_test, y_test, model_type = 'baseline', significance_level=0.05):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.X_test = X_test
+        self.y_test = y_test
+        self.model_type = model_type
+        self.significance_level = significance_level
+
+    # m1: baseline with all fea
+    def baseline_model(self):
+
+        X_train_with_intercept = sm.add_constant(self.X_train)
+        model = sm.OLS(self.y_train, X_train_with_intercept).fit()
+            
+        return model
+
+    
+    # m2: backward fea selection
+    def backward_model(self, significance_level=0.05):
+        
+        # add a constant to the data (intercept)
+        X_train_with_intercept = sm.add_constant(self.X_train)
+    
+        while True:
+            model = sm.OLS(self.y_train, X_train_with_intercept).fit()
+            
+            # p-values of the features (excluding the intercept)
+            p_values = model.pvalues[1:]  # Exclude the intercept
+            max_p_value = p_values.max()
+    
+            # if the highest p-value > significance_level, remove the feature
+            if max_p_value > significance_level:
+                # get feature with highest p-value
+                feature_to_remove = p_values.idxmax()  
+                X_train_with_intercept = X_train_with_intercept.drop(columns=[feature_to_remove])
+            else:
+                break
+
+        # subset the data
+        X_selected = X_train_with_intercept
+        
+        # fit the final model
+        model = sm.OLS(self.y_train, X_selected).fit()
+    
+        return model, X_selected
+
+
+    # m3: forward fea selection
+    def forward_model(self, significance_level=0.05):
+        # add a constant to the data (intercept)
+        X_train_with_intercept = sm.add_constant(self.X_train)
+
+        
+        selected_features = []  
+        remaining_features = list(X_train_with_intercept.columns)  
+        
+        while remaining_features:
+            p_values = []
+            
+            # for each feature, fit the model and store p-values
+            for feature in remaining_features:
+                model = sm.OLS(self.y_train, sm.add_constant(X_train_with_intercept[selected_features + [feature]])).fit()
+                p_values.append((feature, model.pvalues[feature])) 
+    
+            # sort features by p-value (ascending)
+            p_values.sort(key=lambda x: x[1])  
+    
+            # If the best p-value < significance level, add that feature
+            best_feature, best_p_value = p_values[0]
+            
+            if best_p_value < significance_level:
+                selected_features.append(best_feature)  
+                remaining_features.remove(best_feature) 
+            else:
+                break  
+    
+        # subset the data
+        X_selected= X_train_with_intercept[selected_features]
+        
+        # fit the final model
+        model = sm.OLS(self.y_train, X_selected).fit()
+    
+        return model, X_selected
+
         
     def run_model(self):
         if self.model_type == 'baseline':
