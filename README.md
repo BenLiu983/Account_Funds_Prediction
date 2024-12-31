@@ -13,5 +13,5 @@
 
 * Python Version: 3.9.10
 
-* Packages: https://github.com/BenLiu983/Account_Funds_Prediction/blob/main/requirements.txt
+* Packages: see "requirements.txt"
 
