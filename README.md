@@ -21,24 +21,24 @@
 
 ### 3.1 Overview
 
-![df_head.png](image/df_head.png)
+![df_head.png](doc/image/df_head.png)
 
 * The dataset is comprised is 200k rows and 52 columns. (1 target column, 1 id column, 50 features).
 * The code regarding generating sample data can be referenced in "data" folder.
 
 ### 3.2 Basic statistics
 
-![df_describe.png](image/df_describe.png)
+![df_describe.png](doc/image/df_describe.png)
 
 ### 3.3 Distribution of the target
 
-![df_target.png](image/df_target.png)
+![df_target.png](doc/image/df_target.png)
 
 * It's a classic long-tail (pareto) distribution.
 
 ### 3.4 Correlation 
 
-![df_corr.png](image/df_corr.png)
+![df_corr.png](doc/image/df_corr.png)
 
 * All features are weakly correlated, except "funds_after_6months" (target) and "funds_now".
 
@@ -46,11 +46,11 @@
 
 * Funds now:
 
-![df_funds.png](image/df_funds.png)
+![df_funds.png](doc/image/df_funds.png)
 
 * Credit card balance:
 
-![df_cc_balance.png](image/df_cc_balance.png)
+![df_cc_balance.png](doc/image/df_cc_balance.png)
 
 
 
