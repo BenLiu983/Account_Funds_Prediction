@@ -16,3 +16,6 @@ seaborn==0.12.2
 
 jupyterlab==4.3.4
 notebook==6.5.5
+
+joblib==1.4.2
+
