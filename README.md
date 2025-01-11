@@ -61,7 +61,7 @@
 |-------------------|----------------------|------------------|----------------------------|
 | Linear Regression | 0.941                | 0.940            | 6.8s (backward selection)  |
 | Random Forest     | 0.885                | 0.878            | 1.2h (32 fits HyperOpt)    |
-| LightGBM          | 0.942                | 0.940            | 11.8s (32 fits HyperOpt)   |
+| LightGBM          | 0.942                | 0.941            | 11.8s (32 fits HyperOpt)   |
 | XGBoost           | 0.952                | 0.940            | 24.4min (32 fits HyperOpt) |
 
 ### 4.2 Other metrics
@@ -70,7 +70,7 @@
 |-------------------|---------------|-----------|-------------|---------|
 | Linear Regression | 85664.9       | 85301.3   | 0.841       | 0.842   |
 | Random Forest     | 172067.8      | 173132.6  | 0.359       | 0.349   |
-| LightGBM          | 85253.3       | 85355.9   | 0.843       | 0.842   |
+| LightGBM          | 84909.2       | 85232.4   | 0.844       | 0.842   |
 | XGBoost           | 73908.8       | 82938.6   | 0.881       | 0.850   |
 
 * Based on the above results, LightGBM and Linear Regression yielded the highest Power Ratio without overfitting. 
@@ -78,7 +78,7 @@ They are both efficient, but we are inclined to use LightGBM since it's more cap
 
 ## 5. Feature Importance
 
-![fea_imp.png](doc/image/fea_imp.png)
+![fea_imp.png](doc/image/fea_imp2.png)
 
 * Top 3 vital features are current funds, mortgage balance, and annual income.
 
